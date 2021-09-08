@@ -298,6 +298,12 @@ class AllureCodeception extends Extension
         } else if ($test instanceof \PHPUnit\Framework\TestCase) {
             $methodName = $this->methodName = $test->getName(false);
             $className = get_class($test);
+            
+            $event->setLabels(array_merge($event->getLabels(), [
+                new Label("testMethod", $methodName),
+                new Label("testClass", $className)
+            ]));
+            
             if (class_exists($className, false)) {
                 $annotationManager = new Annotation\AnnotationManager(
                     Annotation\AnnotationProvider::getClassAnnotations($className)
